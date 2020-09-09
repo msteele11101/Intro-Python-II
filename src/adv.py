@@ -1,4 +1,5 @@
 from room import Room
+from player import Player
 
 # Declare all the rooms
 
@@ -38,6 +39,10 @@ room['treasure'].s_to = room['narrow']
 #
 
 # Make a new player object that is currently in the 'outside' room.
+print("WELCOME TO PYTHON ADVENTURE GAME!!!")
+player_name = input("Please enter your name --> ")
+player = Player(player_name, room["outside"])
+print(f"---------- Welcome {player.name}! Get ready to start your adventure! ----------\n*press 'q' to quit")
 
 # Write a loop that:
 #
@@ -49,3 +54,22 @@ room['treasure'].s_to = room['narrow']
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
+
+possible_directions = ["n", "s", "e", "w"]
+
+while True:
+    print(f"Location: \033[1m{player.current_room.name}\033[0m")
+    print(player.current_room.description)
+
+    selected_direction = input("Choose a direction --> [n, s, e, w]").lower()
+
+    if selected_direction == "q":
+        print("\n--- Thank you for playing the game ---")
+        break
+    elif selected_direction in possible_directions:
+        try:
+            player.move(selected_direction)
+        except:
+            print("--- You bump into a wall ---\n")
+    else:
+        print("\n--- Error: Please select a valid direction ---\n
