@@ -1,5 +1,6 @@
 from room import Room
 from player import Player
+import textwrap
 
 # Declare all the rooms
 
@@ -39,10 +40,7 @@ room['treasure'].s_to = room['narrow']
 #
 
 # Make a new player object that is currently in the 'outside' room.
-print("WELCOME TO PYTHON ADVENTURE GAME!!!")
-player_name = input("Please enter your name --> ")
-player = Player(player_name, room["outside"])
-print(f"---------- Welcome {player.name}! Get ready to start your adventure! ----------\n*press 'q' to quit")
+newPlayer = Player("Mark", room["outside"])
 
 # Write a loop that:
 #
@@ -55,21 +53,49 @@ print(f"---------- Welcome {player.name}! Get ready to start your adventure! ---
 #
 # If the user enters "q", quit the game.
 
-possible_directions = ["n", "s", "e", "w"]
+directions = ['n', 's', 'w', 'e']
 
 while True:
-    print(f"Location: \033[1m{player.current_room.name}\033[0m")
-    print(player.current_room.description)
+    print(f"{newPlayer.name} you are currently in {newPlayer.current_room}\n")
+    wrappedDescription = textwrap.wrap(newPlayer.current_room.description)
+    for line in wrappedDescription:
+        print(line)
 
-    selected_direction = input("Choose a direction --> [n, s, e, w]").lower()
+    direction = input("Enter the direction you want to go in i.e 'n', 's', 'e', 'w' :  ")
 
-    if selected_direction == "q":
-        print("\n--- Thank you for playing the game ---")
+    currentLocation = newPlayer.current_room
+
+    if direction == 'n':
+        if currentLocation.n_to != None:
+            print("You moved north\n")
+            newPlayer.current_room = currentLocation.n_to
+        else :
+            print("There is no room in that direction, try another one.\n")  
+
+    elif direction == 's':
+        if currentLocation.s_to != None:
+            print("You moved south\n")
+            newPlayer.current_room = currentLocation.s_to
+        else :
+            print("There is no room in that direction, try another one.\n")
+
+    elif direction == 'e':
+        if currentLocation.e_to != None:
+            print("You moved east\n")
+            newPlayer.current_room = currentLocation.e_to
+        else :
+            print("There is no room in that direction, try another one.\n")
+
+    elif direction == 'w':
+        if currentLocation.w_to != None:
+            print("You moved west\n")
+            newPlayer.current_room = currentLocation.w_to
+        else :
+            print("There is no room in that direction, try another one.\n")
+
+    elif direction == 'q':
+        print("Thanks for playing")
         break
-    elif selected_direction in possible_directions:
-        try:
-            player.move(selected_direction)
-        except:
-            print("--- You bump into a wall ---\n")
+    
     else:
-        print("\n--- Error: Please select a valid direction ---\n
+        print("You didn't enter a proper direction. i.e 'n', 's', 'e', 'w' ")
